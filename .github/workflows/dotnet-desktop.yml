@@ -1,4 +1,4 @@
-name: .NET Core Desktop
+name: User Service CI/CD
 
 on:
   push:
@@ -9,6 +9,7 @@ on:
 jobs:
 
   build:
+    name: .NET Build
     runs-on: windows-latest 
     
     env:
@@ -46,6 +47,7 @@ jobs:
 
 
   docker:
+    name: Docker Build e Push
     runs-on: ubuntu-latest
     needs: build
     environment: Homolog
@@ -69,5 +71,39 @@ jobs:
       - name: Push da imagem
         run: |
           docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/userservice-homolog:${{ github.sha }} .
+
+  deploy:
+    name: Deploy AKS
+    runs-on: ubuntu-latest
+    needs: docker
+    environment: Homolog
+
+    steps:
+
+      - name: AKS deploy placeholder
+        run: |
+          echo "AKS deploy placeholder."
+          
+#      - name: Checkout
+#        uses: actions/checkout@v4
+
+#      - name: Login na Azure
+#        uses: azure/login@v2
+#        with:
+#          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+#      - name: Set context do AKS
+#        uses: azure/aks-set-context@v4
+#        with:
+#          resource-group: ${{ vars.AKS_RESOURCE_GROUP }}
+#          cluster-name: ${{ vars.AKS_CLUSTER_NAME }}
+
+#      - name: Replace Docker image tag
+#        run: |
+#          echo "Replacing image tag in deployment.yaml"
+#          sed -i 's|__TAG__|${{ github.sha }}|g' k8s/deployment.yaml
+
+#      - name: Aplicar manifests
+#        run: kubectl apply -f k8s/
 
     
