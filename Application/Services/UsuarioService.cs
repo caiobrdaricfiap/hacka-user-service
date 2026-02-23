@@ -41,10 +41,10 @@ namespace Application.Services
             _logger.LogInformation($"Novo Usuario adicionado.");
         }
 
-        public async Task ReactivateUserById(int id)
+        public async Task ReactivateUserById(string id)
         {
             _logger.LogInformation($"Reativando user com Id:{id}");
-            Usuario usuario = await _usuarioRepository.GetById(id);
+            Usuario usuario = await _usuarioRepository.GetById(Guid.Parse(id));
 
             if (usuario == null)
                 throw new NotFoundException("Não existe user com Id: " + id);
@@ -125,7 +125,8 @@ namespace Application.Services
             var key = Encoding.UTF8.GetBytes(_configuration["Jwt:SecretKey"]);
             var claims = new[]
             {
-                new Claim(JwtRegisteredClaimNames.Sub, usuario.Email),
+                new Claim(JwtRegisteredClaimNames.Sub, usuario.Id.ToString()),
+                new Claim("Email", usuario.Email),
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
             };
 

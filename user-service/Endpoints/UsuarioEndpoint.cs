@@ -26,7 +26,7 @@ namespace user_service.Endpoints
             return TypedResults.Ok(loggedDTO);
         }
 
-        public static async Task<IResult> ReactivateUser(int id, UsuarioService usuarioService)
+        public static async Task<IResult> ReactivateUser(string id, UsuarioService usuarioService)
         {
             await usuarioService.ReactivateUserById(id);
             return TypedResults.NoContent();

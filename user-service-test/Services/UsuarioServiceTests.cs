@@ -70,14 +70,15 @@ namespace user_service_test.Services
         public async Task ReactivateUserById_DeveReativarUsuario_QuandoExistir()
         {
             // Arrange
-            var usuario = new Usuario { Id = 1, IsActive = false };
+            Guid userId = Guid.NewGuid();
+            var usuario = new Usuario { Id = userId, IsActive = false };
 
             _usuarioRepositoryMock
-                .Setup(x => x.GetById(1))
+                .Setup(x => x.GetById(userId))
                 .ReturnsAsync(usuario);
 
             // Act
-            await _service.ReactivateUserById(1);
+            await _service.ReactivateUserById(userId.ToString());
 
             // Assert
             usuario.IsActive.Should().BeTrue();
@@ -92,11 +93,11 @@ namespace user_service_test.Services
         {
             // Arrange
             _usuarioRepositoryMock
-                .Setup(x => x.GetById(It.IsAny<int>()))
+                .Setup(x => x.GetById(It.IsAny<Guid>()))
                 .ReturnsAsync((Usuario)null);
 
             // Act
-            Func<Task> act = async () => await _service.ReactivateUserById(1);
+            Func<Task> act = async () => await _service.ReactivateUserById(Guid.NewGuid().ToString());
 
             // Assert
             await act.Should().ThrowAsync<NotFoundException>();

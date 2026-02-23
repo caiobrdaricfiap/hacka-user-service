@@ -16,6 +16,7 @@ namespace Infrastructure.Repository
         }
         public async Task Add(T entity)
         {
+            entity.Id = Guid.NewGuid();
             await _dbSet.AddAsync(entity);
             await _context.SaveChangesAsync();
         }
@@ -31,7 +32,7 @@ namespace Infrastructure.Repository
             return await _dbSet.ToListAsync();
         }
 
-        public async Task<T> GetById(int id)
+        public async Task<T> GetById(Guid id)
         {
             return await _dbSet.FirstOrDefaultAsync(entity => entity.Id == id);
         }

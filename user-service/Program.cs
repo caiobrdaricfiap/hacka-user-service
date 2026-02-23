@@ -93,15 +93,12 @@ builder.Services.AddAuthentication(options =>
         ValidateIssuerSigningKey = true,
 
         ValidIssuer = builder.Configuration["Jwt:Issuer"],
-        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:SecretKey"]))
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:SecretKey"])),
+        ValidAlgorithms = new[] { SecurityAlgorithms.HmacSha256 }
     };
 });
 
-builder.Services.AddAuthorization(options =>
-{
-    options.AddPolicy("Administrador", policy => policy.RequireRole("Administrador"));
-});
-
+builder.Services.AddAuthorization();
 builder.Services.AddControllers();
 
 #endregion

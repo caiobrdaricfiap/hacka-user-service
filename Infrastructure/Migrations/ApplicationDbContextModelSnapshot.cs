@@ -24,11 +24,10 @@ namespace Infrastructure.Migrations
 
             modelBuilder.Entity("Domain.Entity.Usuario", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<string>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                        .HasMaxLength(36)
+                        .HasColumnType("nvarchar(36)");
 
                     b.Property<DateTime>("CreateDate")
                         .HasColumnType("datetime2");
