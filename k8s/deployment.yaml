@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: userservice
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: userservice
+  template:
+    metadata:
+      labels:
+        app: userservice
+    spec:
+      containers:
+      - name: userservice
+        image: lucaslosano/userservice-homolog:__TAG__
+        ports:
+        - containerPort: 5230
+        resources:
+          requests:
+            cpu: "10m"
+            memory: "256Mi"
+          limits:
+            cpu: "500m"
+            memory: "512Mi"
